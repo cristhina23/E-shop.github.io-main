@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactStars from "react-rating-stars-component";
 import { Link } from 'react-router-dom';
+import Watch from '../images/watch.jpg';
 
 const SpecialProduct = () => {
   const ratingChanged = () => {
@@ -11,7 +12,7 @@ const SpecialProduct = () => {
       <div className='special-product-cart'>
         <div className='d-flex justify-content-between'>
           <div>
-            <img src='https://www.mobiledokan.com/wp-content/uploads/2020/04/Samsung-Galaxy-Note-10-plus-new.jpg' className='imag img-fluid' alt='' />
+            <img src={Watch} className='imag img-fluid' alt='' />
           </div>
           <div className='special.product-content'>
             <h5 className='brand'>Havels</h5>

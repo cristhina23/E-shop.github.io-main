@@ -25,10 +25,10 @@ function ProductCard(props) {
             <img src={Whish} alt='whish' />
           </Link>
         </div>
-        <div className='product-image'>
+        <Link className='product-image'>
           <img className='imag img-fluid' src={Headphones} alt='product' />
           <img className='imag img-fluid' src={Headphones2} alt='product' />
-        </div>
+        </Link>
         <div className='product-details'>
           <h6 className='brand'> Havels</h6>
           <h5 className='product-title'>

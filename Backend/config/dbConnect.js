@@ -1,8 +1,10 @@
+const e = require('express');
 const mongoose = require('mongoose');
+const env = require('dotenv').config();
 
 const dbConnect = () => {
   try {
-    const conn = mongoose.connect('mongodb+srv://viszellechacon:e-shop123456789@cluster0.vf4nroq.mongodb.net/')
+    const conn = mongoose.connect(process.env.MONGODB_URI)
     console.log('DataBase conectada');
   }
   catch (error) {

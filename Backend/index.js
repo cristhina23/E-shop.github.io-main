@@ -8,8 +8,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const router = require('./routes/authRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
+const cors = require('cors');
+
 dbConnect();
-app.use(bodyParser.json);
+
+app.use(cors({
+  origin: 'http://localhost:3000', // frontend
+  credentials: true,
+}));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/user', authRouter);

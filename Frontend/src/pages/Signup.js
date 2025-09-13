@@ -4,6 +4,7 @@ import BreadCrumb from '../components/BreadCrumb';
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -18,6 +19,7 @@ const Signup = () => {
     password: ''
   });
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -34,8 +36,8 @@ const Signup = () => {
       localStorage.setItem('token', response.data.token);
       setMessage(response.data.message);
       console.log(response.data);
-      if (response.status === 201) {
-        window.location.href = '/';
+      if (response.status === 200 || response.status === 201) {
+        navigate("/");
       }
     } catch (error) {
       if (error.response) {

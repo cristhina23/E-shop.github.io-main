@@ -21,6 +21,9 @@ import TermAndCondition from './pages/TermAndCondition';
 import SingleProduct from './pages/SingleProduct';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import Successful from './pages/Successful';
+import UnSuccessful from './pages/UnSuccessful';
+
 
 function App() {
   return (
@@ -44,10 +47,13 @@ function App() {
           <Route path='forgot-password' element={<Forgotpassword/>} />
           <Route path='signup' element={<Signup/>} />
           <Route path='resetpassword' element={<Resetpassword/>} />
+          <Route path='reset-password' element={<Resetpassword/>} />
           <Route path='privacy-police' element={<Privacypolice/>} />
           <Route path='refund-police' element={<Refundpolice/>} />
           <Route path='shipping-policy' element={<Shippingpolicy/>}/>
           <Route path='term-conditions' element={<TermAndCondition/>}/>
+          <Route path='verify-success' element={<Successful/>}/>
+          <Route path='verify-failed' element={<UnSuccessful/>}/>
         </Route>
           
       </Routes>

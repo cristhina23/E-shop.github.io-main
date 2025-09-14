@@ -5,10 +5,12 @@ import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { IoEyeOff, IoEye } from "react-icons/io5";
 
 
 const Login = () => {
 
+  const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
       email: '',
       password: ''
@@ -70,11 +72,17 @@ const Login = () => {
                 </div>
                 <div className='mt-1'>
                   <input 
-                    type='password' 
+                    type={showPassword ? 'text' : 'password'}  
                     name='password' 
                     value={formData.password}
                     onChange={handleChange}
                     placeholder ='Password' className='form-control' />
+                    <span 
+                                        className='eye-icon' 
+                                        onClick={() => setShowPassword(!showPassword)} 
+                                      >
+                                        {showPassword ? <IoEye /> : <IoEyeOff />}
+                                      </span>
                 </div>
                 <div>
                   <Link to='/forgot-password'>Forgot Password</Link>

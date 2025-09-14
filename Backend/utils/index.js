@@ -1,34 +1,34 @@
 const nodemailer = require("nodemailer");
-require("dotenv").config();
 
-// Create transporter
+// Create a reusable transporter
 const transporter = nodemailer.createTransport({
-  host: "live.smtp.mailtrap.io",
-  port: 587,
+  host: "mail.privateemail.com",
+  port: 465,
+  secure: true,       // true if using port 465
   auth: {
-    user: "api", 
-    pass: process.env.MAILTRAP_PASSWORD, //  API token from Mailtrap
+    user: "contact@cctechsolutions.dev",
+    pass: process.env.EMAIL_PASSWORD
   },
   tls: {
-    rejectUnauthorized: false, // required for Mailtrap sandbox
-  },
+    rejectUnauthorized: false
+  }
 });
 
-// Function to send email
-const sendEmail = async (to, subject, text) => {
-  try {
-    const mailOptions = {
-      from: '"E-Shop" <no-reply@mailtrap.io>',
-      to,
-      subject,
-      text,
-    };
+// Function to send emails dynamically
+const sendEmail = async (to, subject, html) => {
+  const mailOptions = {
+    from: '"CCTech Solutions" <contact@cctechsolutions.dev>',
+    to,
+    subject,
+    html
+  };
 
+  try {
     const info = await transporter.sendMail(mailOptions);
-    console.log(" Email sent successfully", info.response);
+    console.log("Email sent:", info.response);
     return info;
   } catch (error) {
-    console.error("Error sending email", error);
+    console.error("Error sending email:", error);
     throw error;
   }
 };

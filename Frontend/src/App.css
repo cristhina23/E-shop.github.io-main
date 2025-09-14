@@ -18,6 +18,7 @@
 
 body {
   font-family: 'Rubik', sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -910,6 +911,52 @@ Marquee>.hijo {
   color: var(--color-1c1c1b);
 }
 
+/* Virification page */
+.success-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.success-wrapper img {
+  width: 200px;
+}
+.success-wrapper h2 {
+  font-size: 22px;
+  color: var(--color-1c1c1b);
+  margin-bottom: 10px;
+}
+.success-wrapper p {
+  font-size: 14px;
+  color: var(--color-777777);
+  margin-bottom: 20px;
+}
+.success-wrapper a {
+  font-size: 14px;
+  color: var(--color-bf4800);
+  font-weight: bold;
+}
+.mt-1 {
+  margin-top: 10px;
+}
+.relative {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--color-777777);
+  transition: all ease-in-out 0.3s;
+}
+.eye-icon:hover {
+  color: var(--color-bf4800);
+}
 
 
 

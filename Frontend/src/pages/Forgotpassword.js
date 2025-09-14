@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
+import axios from 'axios';
+
 
 const Forgotpassword = () => {
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:4000/api/user/forgot-password", { email });
+      setMessage(res.data.message); // Backend should return {message: "..."}
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
   return (
     <>
       <Meta title={'Forgot Password'} />
@@ -17,11 +32,13 @@ const Forgotpassword = () => {
             <div className='auth-card'>
               <h3 className='text-center'>Reset Your Password| </h3>
               <p className='text-center mt-2 mb-3'>We wil send you an email to reset your password</p>
-              <form action='' className='d-flex flex-column gap-15'>
+              <form onSubmit={handleSubmit} className='d-flex flex-column gap-15'>
                 <div>
                   <input 
                     type='email' 
                     name='email' 
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder ='Email' className='form-control' />
                 </div>
               
@@ -32,6 +49,7 @@ const Forgotpassword = () => {
                   </div>
                 </div>
               </form>
+              {message && <p className="text-center mt-3">{message}</p>}
             </div>
           </div>
         </div>

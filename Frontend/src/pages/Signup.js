@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { IoEyeOff, IoEye } from "react-icons/io5";
 import { toast } from 'react-toastify';
+import api from "../axiosInstance";
 
 
 
@@ -34,7 +35,7 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:4000/api/user/signup', formData);
+      const response = await api.post('/api/user/signup', formData);
 
       localStorage.setItem('token', response.data.token);
 

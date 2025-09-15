@@ -3,7 +3,7 @@ import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
-import axios from 'axios';
+import api from "../axiosInstance";
 
 
 const Forgotpassword = () => {
@@ -13,7 +13,7 @@ const Forgotpassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4000/api/user/forgot-password", { email });
+      const res = await api.post("/api/user/forgot-password", { email });
       setMessage(res.data.message); // Backend should return {message: "..."}
     } catch (error) {
       setMessage(error.response?.data?.message || "Something went wrong");

@@ -4,7 +4,7 @@ import BreadCrumb from '../components/BreadCrumb';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Container from '../components/Container';
 import { IoEyeOff, IoEye } from "react-icons/io5";
-import axios from 'axios';
+import api from "../axiosInstance";
 
 const Resetpassword = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ const Resetpassword = () => {
     }
 
     try {
-      const res = await axios.post(`http://localhost:4000/api/user/reset-password/${token}`, {password });
+      const res = await api.post(`/api/user/reset-password/${token}`, {password });
       setMessage(res.data.message); // Backend should return {message: "..."}
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {

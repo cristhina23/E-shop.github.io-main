@@ -8,6 +8,7 @@ import axios from 'axios';
 import { IoEyeOff, IoEye } from "react-icons/io5";
 import { toast } from 'react-toastify';
 import { useAuth } from "../Contexts/AuthContext";
+import api from "../axiosInstance";
 
 
 const Login = () => {
@@ -32,7 +33,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:4000/api/user/login', formData);
+      const response = await api.post('/api/user/login', formData);
 
       localStorage.setItem('token', response.data.token);
       console.log(response.data);

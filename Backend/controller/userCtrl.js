@@ -10,7 +10,9 @@ const createUser = asyncHandler(async (req, res) => {
 
   // Check if user already exists
   const findUser = await User.findOne({ email });
-  if (findUser) throw new Error('User Already Exists');
+  if (findUser) {
+    return res.status(400).json({ message: 'User already exists' });
+  }
 
   // Generate verification token
   const verificationToken = crypto.randomBytes(32).toString("hex");
@@ -28,6 +30,8 @@ const createUser = asyncHandler(async (req, res) => {
 
   // Generate dynamic verification link
   const verifyLink = `http://localhost:4000/api/user/verify/${verificationToken}`;
+
+
 
   // Send verification email
   await sendEmail(
@@ -76,23 +80,26 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   const findUser = await User.findOne({ email: email.toLowerCase() });
 
   if (!findUser) {
-    return res.status(401).json({ message: 'Invalid email or password' });
+    return res.status(401).json({ message: 'User not found' });
   }
 
   if (!findUser.isVerified) {
     return res.status(401).json({ message: "Please verify your email first" });
   }
 
-  if (await findUser.isPasswordMatched(password)) {
-    res.status(200).json({
-      _id: findUser._id,
-      name: findUser.firstname,
-      email: findUser.email,
-      token: generateToken(findUser._id),
-    });
-  } else {
-    res.status(401).json({ message: 'Invalid email or password/Password is incorrect' });
+  const isMatch = await findUser.isPasswordMatched(password);
+
+  if (!isMatch) {
+    return res.status(401).json({ message: 'Invalid password' });
   }
+
+  res.status(200).json({
+    _id: findUser._id,
+    firstname: findUser.firstname,
+    email: findUser.email,
+    token: generateToken(findUser._id),
+  });
+
 });
 
 const logoutCtrl = asyncHandler(async (req, res) => {
@@ -161,4 +168,31 @@ const resetPasswordCtrl = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'Password reset successful' });
 })
 
-module.exports = { createUser, loginUserCtrl, verifyEmail, logoutCtrl, getUser, forgotPasswordCtrl, resetPasswordCtrl };
+const getUserProfile = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  }
+
+  res.status(200).json(req.user);
+});
+
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  }
+
+  user.firstname = req.body.firstname || user.firstname;
+  user.lastname = req.body.lastname || user.lastname;
+  user.email = req.body.email || user.email;
+  user.mobile = req.body.mobile || user.mobile;
+
+  const updatedUser = await user.save();
+
+  res.status(200).json(updatedUser, { message: 'Profile updated successfully' });
+})
+
+module.exports = { createUser, loginUserCtrl, verifyEmail, logoutCtrl, getUser, forgotPasswordCtrl, resetPasswordCtrl, getUserProfile, updateUserProfile };

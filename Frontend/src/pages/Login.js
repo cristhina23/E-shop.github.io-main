@@ -6,7 +6,7 @@ import Container from '../components/Container';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { IoEyeOff, IoEye } from "react-icons/io5";
-
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
@@ -30,23 +30,31 @@ const Login = () => {
 
     try {
       const response = await axios.post('http://localhost:4000/api/user/login', formData);
+
       localStorage.setItem('token', response.data.token);
-      setMessage(response.data.message);
       console.log(response.data);
+
+      toast.success("login successful");
+
       if (response.status === 200 || response.status === 201) {
         navigate("/");
+        
       }
     } catch (error) {
-      if (error.response) {
-        setMessage('Error: ' + error.response.data.message);
-        console.log(error.response.data);
-      } else if (error.request) {
-        setMessage('Error: ' + error.request);
-        console.log(error.request);
-      } else {
-        setMessage('Error: ' + error.message);
-        console.log(error.message);
-      }
+      let errorMsg = "Something went wrong";
+
+    if (error.response) {
+      errorMsg = error.response.data.message || "Login failed";
+      console.log(error.response.data);
+    } else if (error.request) {
+      errorMsg = "No response from server";
+      console.log(error.request);
+    } else {
+      errorMsg = error.message;
+      console.log(error.message);
+    }
+
+    toast.error(errorMsg);
     }
   }
 
@@ -61,31 +69,34 @@ const Login = () => {
           <div className='col-12'>
             <div className='auth-card'>
               <h3 className='text-center'>Login</h3>
-              <form onSubmit={handleSubmit} className='d-flex flex-column gap-15'>
-                <div>
+              <form onSubmit={handleSubmit} className='d-flex flex-column gap-15 relative'>
+                <div className='mt-1'>
                   <input 
                     type='email' 
                     name='email' 
                     value={formData.email}
                     onChange={handleChange}
+                    
                     placeholder ='Email' className='form-control' />
+                    
                 </div>
-                <div className='mt-1'>
+                <div className='mt-1 absolute' >
                   <input 
                     type={showPassword ? 'text' : 'password'}  
                     name='password' 
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder ='Password' className='form-control' />
+                    
+                    placeholder ='••••••••' className='form-control' />
                     <span 
-                                        className='eye-icon' 
-                                        onClick={() => setShowPassword(!showPassword)} 
-                                      >
-                                        {showPassword ? <IoEye /> : <IoEyeOff />}
-                                      </span>
+                      className='eye-icon' 
+                      onClick={() => setShowPassword(!showPassword)} 
+                    >
+                      {showPassword ? <IoEye /> : <IoEyeOff />}
+                    </span>
                 </div>
                 <div>
-                  <Link to='/forgot-password'>Forgot Password</Link>
+                  <Link to='/forgot-password' className=' text-orange hover'>Forgot Password?</Link>
                   <div className='mt-3 d-flex justify-content-center align-items-center gap-15'>
                     <button className='button' type='submit'>Login</button>
                     <Link to='/signup' className='button signup'>SignUp</Link>

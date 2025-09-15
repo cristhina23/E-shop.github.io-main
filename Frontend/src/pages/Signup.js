@@ -6,7 +6,7 @@ import Container from '../components/Container';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { IoEyeOff, IoEye } from "react-icons/io5";
-
+import { toast } from 'react-toastify';
 
 
 
@@ -35,23 +35,29 @@ const Signup = () => {
 
     try {
       const response = await axios.post('http://localhost:4000/api/user/signup', formData);
+
       localStorage.setItem('token', response.data.token);
-      setMessage(response.data.message);
-      console.log(response.data);
+
+      toast.info("Verification email sent. Please check your inbox.");
+      
       if (response.status === 200 || response.status === 201) {
         navigate("/login");
       }
     } catch (error) {
-      if (error.response) {
-        setMessage('Error: ' + error.response.data.message);
-        console.log(error.response.data);
-      } else if (error.request) {
-        setMessage('Error: ' + error.request);
-        console.log(error.request);
-      } else {
-        setMessage('Error: ' + error.message);
-        console.log(error.message);
-      }
+      let errorMsg = "Something went wrong";
+      
+          if (error.response) {
+            errorMsg = error.response.data.message || "Login failed";
+            console.log(error.response.data);
+          } else if (error.request) {
+            errorMsg = "No response from server";
+            console.log(error.request);
+          } else {
+            errorMsg = error.message;
+            console.log(error.message);
+          }
+      
+          toast.error(errorMsg);
     }
   }
 
@@ -74,45 +80,65 @@ const Signup = () => {
                     name='firstname' 
                     value={formData.name}
                     onChange={handleChange}
+                    pattern='^[A-Za-z\s]{3,30}$'
                     placeholder ='First Name' className='form-control' />
+                    <small className="form-text text-muted">
+                      Only letters, 3–30 characters.
+                    </small>
                 </div>
                 <div>
                   <input 
                     type='text' 
                     name='lastname' 
+                    pattern='^[A-Za-z\s]{3,30}$'
                     value={formData.name}
                     onChange={handleChange}
                     placeholder ='Last Name' className='form-control' />
+                    <small className="form-text text-muted">
+                      Only letters, 3–30 characters.
+                    </small>
                 </div>
                 <div>
                   <input 
                     type='email' 
                     name='email' 
+                    pattern='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder ='Email' className='form-control' />
+                    placeholder ='email@example.com' className='form-control' />
+                    <small className="form-text text-muted">
+                      Enter a valid email address
+                    </small>
                 </div>
                 <div>
                   <input 
                     type='tel' 
                     name='mobile' 
+                    pattern='^\d{10}$'
                     value={formData.mobile}
                     onChange={handleChange}
                     placeholder ='Mobile Number' className='form-control' />
+                    <small className="form-text text-muted">
+                      Only include numbers, 9 digits
+                    </small>
                 </div>
                 <div className='mt-1'>
                   <input 
                     type={showPassword ? 'text' : 'password'} 
                     name='password' 
+                    pattern='^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
                     value={formData.password}
                     onChange={handleChange}
-                    placeholder ='Password' className='form-control' />
+                    placeholder ='••••••••' className='form-control' />
                      <span 
                                         className='eye-icon' 
                                         onClick={() => setShowPassword(!showPassword)} 
                                       >
                                         {showPassword ? <IoEye /> : <IoEyeOff />}
                                       </span>
+                    <small className="form-text text-muted">  
+                      Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character.
+                    </small>
                 </div>
                 <div>
                 
@@ -120,7 +146,7 @@ const Signup = () => {
                     <button className='button'>Sign Up</button>
                   
                   </div>
-                  <p className='mt-3 text-center'>Already have an account? <Link to='/login' className='text-primary'>Login</Link></p>
+                  <p className='mt-3 text-center'>Already have an account? <Link to='/login' className='text-orange fw-bold'>Login</Link></p>
                   {message && <p className="text-danger">{message}</p>}
                 </div>
               </form>

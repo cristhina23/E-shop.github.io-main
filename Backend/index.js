@@ -1,29 +1,32 @@
 const express = require('express');
 const dbConnect = require('./config/dbConnect');
-const app = express();
 const dotenv = require('dotenv').config();
-const PORT = process.env.PORT || 4000;
-const authRouter = require('./routes/authRoutes');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const router = require('./routes/authRoutes');
 const { notFound, errorHandler } = require('./middlewares/errorHandler');
+const authRouter = require('./routes/authRoutes');
 const cors = require('cors');
 
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+// Conexión DB
 dbConnect();
 
+// Middlewares
 app.use(cors({
-  origin: 'http://localhost:3000', // frontend
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
+// Rutas
 app.use('/api/user', authRouter);
 
+// Manejo de errores
 app.use(notFound);
 app.use(errorHandler);
 
+// Server
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);
 });

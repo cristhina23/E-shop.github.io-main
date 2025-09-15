@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import {store} from './app/store';
+import { AuthProvider } from './Contexts/AuthContext';
 
 
 
@@ -16,10 +17,11 @@ const root = createRoot(container);
 root.render(
 
       <Provider store={store}>
-        
+      <AuthProvider>
         <App />
         <ToastContainer position="top-right" autoClose={3000} />
-      </Provider>
+      </AuthProvider>
+    </Provider>
       
    
 );

@@ -7,8 +7,11 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { IoEyeOff, IoEye } from "react-icons/io5";
 import { toast } from 'react-toastify';
+import { useAuth } from "../Contexts/AuthContext";
+
 
 const Login = () => {
+  const { setUser } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,6 +36,13 @@ const Login = () => {
 
       localStorage.setItem('token', response.data.token);
       console.log(response.data);
+
+      // update auth context
+      setUser({
+        _id: formData._id,
+        name: formData.name,
+        email: formData.email,
+      });
 
       toast.success("login successful");
 

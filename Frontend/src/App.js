@@ -23,6 +23,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Successful from './pages/Successful';
 import UnSuccessful from './pages/UnSuccessful';
+import UserDashboard from './pages/UserDashboard';
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
           <Route path='term-conditions' element={<TermAndCondition/>}/>
           <Route path='verify-success' element={<Successful/>}/>
           <Route path='verify-failed' element={<UnSuccessful/>}/>
+          <Route path='profile' element={<UserDashboard/>} />
         </Route>
           
       </Routes>

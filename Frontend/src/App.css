@@ -25,6 +25,9 @@ body {
   color: var(--color-bf4800) !important;
   
 }
+.text-dark {
+  color: var(--color-232f3e) !important;
+}
 
 .hover {
   transition: all 0.3s ease-in-out;
@@ -980,8 +983,62 @@ Marquee>.hijo {
   padding-left: 10px;
  
 }
+.dashboard-menu {
+  width: 200px;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
 
+.dashboard-menu h3 {
+  color: var(--color-232f3e);
+}
 
+.dashboard-menu-list {
+  margin: 0;
+  list-style: none;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
 
+.dashboard-menu-list.item {
+  padding: 15px 0;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+  background-color: #777777 !important;
+}
 
+.dashboard-menu-list.item:hover {
+  color: var(--color-bf4800);
+  transform: translateX(10px);
+}
+.dashboard-menu-list.item.active {
+  color: var(--color-bf4800);
+}
+
+.profile-settings {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.profile-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--color-bf4800);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;
+}
+
+.profile-btn:hover {
+  background-color: var(--color-232f3e);
+}
+
+.profile-btn.active {
+  background-color: var(--color-232f3e);
+}
 

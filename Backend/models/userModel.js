@@ -11,6 +11,13 @@ const userSchema = new mongoose.Schema({
   verificationToken: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  role: { type: String, enum: ['admin', 'user'], default: 'user' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  profileImage: {
+    type: String,
+    default: "https://cdn-icons-png.flaticon.com/512/149/149071.png", 
+  },
 });
 
 // Hash password before saving

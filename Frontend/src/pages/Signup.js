@@ -117,7 +117,6 @@ const Signup = () => {
                   <input 
                     type='tel' 
                     name='mobile' 
-                    pattern='^\d{10}$'
                     value={formData.mobile}
                     onChange={handleChange}
                     placeholder ='Mobile Number' className='form-control' />

@@ -9,7 +9,7 @@ const createUser = asyncHandler(async (req, res) => {
   const { email, password, firstname, lastname, mobile } = req.body;
 
   // Check if user already exists
-  const findUser = await User.findOne({ email });
+  const findUser = await User.findOne({ email: email.toLowerCase() });
   if (findUser) {
     return res.status(400).json({ message: 'User already exists' });
   }
@@ -28,10 +28,8 @@ const createUser = asyncHandler(async (req, res) => {
     isVerified: false
   });
 
-  // Generate dynamic verification link
-  const verifyLink = `http://localhost:4000/api/user/verify/${verificationToken}`;
-
-
+  // Verification link (update URL for production)
+  const verifyLink = `${process.env.FRONTEND_URL}/verify/${verificationToken}`;
 
   // Send verification email
   await sendEmail(
@@ -43,17 +41,17 @@ const createUser = asyncHandler(async (req, res) => {
       <p>Haz clic en el siguiente botón para verificar tu cuenta:</p>
       <a href="${verifyLink}" style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;">Verificar Email</a>
       <p style="margin-top: 20px;">Si no solicitaste esta cuenta, puedes ignorar este mensaje.</p>
-    </div>
-    `
+    </div>`
   );
 
   res.status(201).json({
     _id: newUser._id,
     firstname: newUser.firstname,
     email: newUser.email,
-    token: generateToken(newUser._id),
+    message: "User created. Verification email sent."
   });
 });
+
 
 // Verify user email
 const verifyEmail = asyncHandler(async (req, res) => {

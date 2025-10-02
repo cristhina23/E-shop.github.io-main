@@ -31,26 +31,36 @@ const createUser = asyncHandler(async (req, res) => {
   // Verification link (update URL for production)
   const verifyLink = `${process.env.FRONTEND_URL}/verify/${verificationToken}`;
 
-  // Send verification email
-  await sendEmail(
-    newUser.email,
-    "Verify your E-Shop account",
-    `<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
-      <h2 style="color: #2c3e50;">Hola ${newUser.firstname} ${newUser.lastname},</h2>
-      <p>Gracias por registrarte en <strong>CCTech Solutions</strong>.</p>
-      <p>Haz clic en el siguiente botón para verificar tu cuenta:</p>
-      <a href="${verifyLink}" style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;">Verificar Email</a>
-      <p style="margin-top: 20px;">Si no solicitaste esta cuenta, puedes ignorar este mensaje.</p>
-    </div>`
-  );
+  // Try to send verification email
+  let emailSent = false;
+  try {
+    await sendEmail(
+      newUser.email,
+      "Verify your E-Shop account",
+      `<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
+        <h2 style="color: #2c3e50;">Hola ${newUser.firstname} ${newUser.lastname},</h2>
+        <p>Gracias por registrarte en <strong>CCTech Solutions</strong>.</p>
+        <p>Haz clic en el siguiente botón para verificar tu cuenta:</p>
+        <a href="${verifyLink}" style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;">Verificar Email</a>
+        <p style="margin-top: 20px;">Si no solicitaste esta cuenta, puedes ignorar este mensaje.</p>
+      </div>`
+    );
+    emailSent = true;
+  } catch (err) {
+    console.error("Error sending verification email:", err.message);
+  }
 
+  // Respond to frontend
   res.status(201).json({
     _id: newUser._id,
     firstname: newUser.firstname,
     email: newUser.email,
-    message: "User created. Verification email sent."
+    message: emailSent
+      ? "User created. Verification email sent."
+      : "User created, but failed to send verification email. Contact support."
   });
 });
+
 
 
 // Verify user email

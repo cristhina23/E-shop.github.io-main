@@ -31,18 +31,16 @@ const Signup = () => {
     });
   };
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
     const { data, status } = await api.post('/api/user/signup', formData);
 
-    // Guarda el token en localStorage
-    localStorage.setItem('token', data.token);
+    // Mostrar mensaje de verificación
+    toast.info(data.message || "Verification email sent. Please check your inbox.");
 
-    toast.info("Verification email sent. Please check your inbox.");
-
-    if (status === 200 || status === 201) {
+    if (status === 201) {
       navigate("/login");
     }
   } catch (error) {
@@ -62,6 +60,7 @@ const Signup = () => {
     toast.error(errorMsg);
   }
 };
+
 
 
 

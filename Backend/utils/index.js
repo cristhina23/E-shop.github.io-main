@@ -2,11 +2,11 @@ const nodemailer = require("nodemailer");
 
 // Create a reusable transporter
 const transporter = nodemailer.createTransport({
-  host: "mail.privateemail.com",
+  host: process.env.EMAIL_HOST,
   port: 465,
-  secure: true,       // true if using port 465
+  secure: true,
   auth: {
-    user: "contact@cctechsolutions.dev",
+    user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASSWORD
   },
   tls: {

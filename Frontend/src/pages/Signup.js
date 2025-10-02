@@ -81,7 +81,7 @@ const Signup = () => {
                   <input 
                     type='text' 
                     name='firstname' 
-                    value={formData.name}
+                    value={formData.firstname}
                     onChange={handleChange}
                     pattern='^[A-Za-z\s]{3,30}$'
                     placeholder ='First Name' className='form-control' />
@@ -94,7 +94,7 @@ const Signup = () => {
                     type='text' 
                     name='lastname' 
                     pattern='^[A-Za-z\s]{3,30}$'
-                    value={formData.name}
+                    value={formData.lastname}
                     onChange={handleChange}
                     placeholder ='Last Name' className='form-control' />
                     <small className="form-text text-muted">

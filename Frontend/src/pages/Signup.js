@@ -31,36 +31,38 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await api.post('/api/user/signup', formData);
+  try {
+    const { data, status } = await api.post('/api/user/signup', formData);
 
-      localStorage.setItem('token', response.data.token);
+    // Guarda el token en localStorage
+    localStorage.setItem('token', data.token);
 
-      toast.info("Verification email sent. Please check your inbox.");
-      
-      if (response.status === 200 || response.status === 201) {
-        navigate("/login");
-      }
-    } catch (error) {
-      let errorMsg = "Something went wrong";
-      
-          if (error.response) {
-            errorMsg = error.response.data.message || "Login failed";
-            console.log(error.response.data);
-          } else if (error.request) {
-            errorMsg = "No response from server";
-            console.log(error.request);
-          } else {
-            errorMsg = error.message;
-            console.log(error.message);
-          }
-      
-          toast.error(errorMsg);
+    toast.info("Verification email sent. Please check your inbox.");
+
+    if (status === 200 || status === 201) {
+      navigate("/login");
     }
+  } catch (error) {
+    let errorMsg = "Something went wrong";
+
+    if (error.response) {
+      errorMsg = error.response.data.message || "Signup failed";
+      console.log("Signup error:", error.response.data);
+    } else if (error.request) {
+      errorMsg = "No response from server";
+      console.log("Request error:", error.request);
+    } else {
+      errorMsg = error.message;
+      console.log("General error:", error.message);
+    }
+
+    toast.error(errorMsg);
   }
+};
+
 
 
   return (

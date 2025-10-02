@@ -4,6 +4,8 @@ import BreadCrumb from '../components/BreadCrumb';
 import { Link } from 'react-router-dom';
 import Container from '../components/Container';
 import api from "../axiosInstance";
+import { toast } from 'react-toastify';
+
 
 
 const Forgotpassword = () => {
@@ -14,9 +16,12 @@ const Forgotpassword = () => {
     e.preventDefault();
     try {
       const res = await api.post("/api/user/forgot-password", { email });
+      toast.success(res.data.message || "Email sent successfully");
       setMessage(res.data.message); // Backend should return {message: "..."}
     } catch (error) {
-      setMessage(error.response?.data?.message || "Something went wrong");
+      const errorMsg = error.response?.data?.message || "Something went wrong";
+      toast.error(errorMsg);
+      setMessage(errorMsg);
     }
   };
 

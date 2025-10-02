@@ -30,29 +30,30 @@ const Login = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const response = await api.post('/api/user/login', formData);
+  try {
+    // Hacemos la petición al backend
+    const response = await api.post("/api/user/login", formData);
 
-      localStorage.setItem('token', response.data.token);
-      console.log(response.data);
+    // Guardamos el token en localStorage
+    localStorage.setItem("token", response.data.token);
 
-      // update auth context
-      setUser({
-        _id: formData._id,
-        name: formData.name,
-        email: formData.email,
-      });
+    // Actualizamos el contexto con los datos del usuario devueltos por el backend
+    setUser({
+      _id: response.data.user._id,
+      name: response.data.user.name,
+      email: response.data.user.email,
+    });
 
-      toast.success("login successful");
+    toast.success("Login successful");
 
-      if (response.status === 200 || response.status === 201) {
-        navigate("/");
-        
-      }
-    } catch (error) {
-      let errorMsg = "Something went wrong";
+    // Redirigir si todo fue correcto
+    if (response.status === 200 || response.status === 201) {
+      navigate("/");
+    }
+  } catch (error) {
+    let errorMsg = "Something went wrong";
 
     if (error.response) {
       errorMsg = error.response.data.message || "Login failed";
@@ -66,8 +67,9 @@ const Login = () => {
     }
 
     toast.error(errorMsg);
-    }
   }
+};
+
 
   return (
     <>

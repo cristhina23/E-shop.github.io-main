@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Rutas
 app.get("/", (req, res) => {
-  res.send("✅ Backend funcionando en Render");
+  res.send("✅ Backend running on Render");
 });
 app.use('/api/user', authRouter);
 

@@ -700,7 +700,7 @@ Marquee>.hijo {
 
 .auth-card .form-control {
   height: 50px;
-  background-color: var(--color-f5f5f7);
+  background-color: var(--color-ededed);
   color: var(--color-777777);
   font-size: 14px;
   border-radius: 10px;

@@ -8,13 +8,19 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("token"); // <-- verifica el token primero
+    if (!token) {
+      setLoading(false);
+      return; // no hace fetch si no hay token
+    }
+
     const fetchUser = async () => {
       try {
         const { data } = await api.get("/api/user/profile"); 
         setUser(data);
       } catch (error) {
         console.error("Error fetching user:", error);
-        localStorage.removeItem("token");
+        localStorage.removeItem("token"); // limpia token inválido
       } finally {
         setLoading(false);
       }

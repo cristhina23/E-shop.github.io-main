@@ -35,28 +35,15 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const { data, status } = await api.post('/api/user/signup', formData);
+    const { data } = await api.post('/api/user/signup', formData);
 
-    // Mostrar mensaje de verificación
-    toast.info(data.message || "Verification email sent. Please check your inbox.");
+    // Show toast with backend message
+    toast.info(data.message);
 
-    if (status === 201) {
-      navigate("/login");
-    }
+    // Redirect to login
+    navigate("/login");
   } catch (error) {
-    let errorMsg = "Something went wrong";
-
-    if (error.response) {
-      errorMsg = error.response.data.message || "Signup failed";
-      console.log("Signup error:", error.response.data);
-    } else if (error.request) {
-      errorMsg = "No response from server";
-      console.log("Request error:", error.request);
-    } else {
-      errorMsg = error.message;
-      console.log("General error:", error.message);
-    }
-
+    const errorMsg = error.response?.data?.message || "Signup failed";
     toast.error(errorMsg);
   }
 };

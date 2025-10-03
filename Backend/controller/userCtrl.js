@@ -8,16 +8,16 @@ const sendEmail = require('../utils/index');
 const createUser = asyncHandler(async (req, res) => {
   const { email, password, firstname, lastname, mobile } = req.body;
 
-  // Check if user already exists
+  // 1. Check if user already exists
   const findUser = await User.findOne({ email: email.toLowerCase() });
   if (findUser) {
     return res.status(400).json({ message: 'User already exists' });
   }
 
-  // Generate verification token
+  // 2. Generate verification token
   const verificationToken = crypto.randomBytes(32).toString("hex");
 
-  // Create new user
+  // 3. Create new user
   const newUser = await User.create({
     firstname,
     lastname,
@@ -28,57 +28,66 @@ const createUser = asyncHandler(async (req, res) => {
     isVerified: false
   });
 
-  // Verification link (update URL for production)
+  // 4. Verification link
   const verifyLink = `${process.env.FRONTEND_URL}/verify/${verificationToken}`;
 
-  // Try to send verification email
+  // 5. Send email
   let emailSent = false;
   try {
     await sendEmail(
       newUser.email,
       "Verify your E-Shop account",
       `<div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9;">
-        <h2 style="color: #2c3e50;">Hola ${newUser.firstname} ${newUser.lastname},</h2>
-        <p>Gracias por registrarte en <strong>CCTech Solutions</strong>.</p>
-        <p>Haz clic en el siguiente botón para verificar tu cuenta:</p>
-        <a href="${verifyLink}" style="display: inline-block; padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;">Verificar Email</a>
-        <p style="margin-top: 20px;">Si no solicitaste esta cuenta, puedes ignorar este mensaje.</p>
+        <h2>Hello ${newUser.firstname} ${newUser.lastname},</h2>
+        <p>Thank you for signing up at <strong>CCTech Solutions</strong>.</p>
+        <p>Click the button below to verify your account:</p>
+        <a href="${verifyLink}" style="padding: 10px 20px; background-color: #3498db; color: white; text-decoration: none; border-radius: 5px;">Verify Email</a>
+        <p>If you did not request this account, please ignore this email.</p>
       </div>`
     );
     emailSent = true;
   } catch (err) {
-    console.error("Error sending verification email:", err.message);
+    console.error("SMTP error:", err.message);
   }
 
-  // Respond to frontend
+  // 6. Respond to frontend
   res.status(201).json({
     _id: newUser._id,
     firstname: newUser.firstname,
     email: newUser.email,
+    isVerified: newUser.isVerified,
     message: emailSent
       ? "User created. Verification email sent."
-      : "User created, but failed to send verification email. Contact support."
+      : "User created, but failed to send verification email. Please contact support."
   });
 });
 
 
 
+
+
+// Verify user email
 // Verify user email
 const verifyEmail = asyncHandler(async (req, res) => {
   const { token } = req.params;
+
+  // Find user by verification token
   const user = await User.findOne({ verificationToken: token });
 
   if (!user) {
-    return res.redirect('http://localhost:3000/verify-failed'); 
+    // Redirect to frontend fail page
+    return res.redirect(`${process.env.FRONTEND_URL}/verify-failed`);
   }
 
+  // Mark user as verified
   user.isVerified = true;
   user.verificationToken = null;
   await user.save();
 
-  // Redirect to your frontend success page
-  res.redirect('http://localhost:3000/verify-success');
+  // Redirect to frontend success page
+  res.redirect(`${process.env.FRONTEND_URL}/verify-success`);
 });
+
 
 
 

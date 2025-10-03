@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 
-// Create a reusable transporter
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: 465,
@@ -14,10 +13,9 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Function to send emails dynamically
 const sendEmail = async (to, subject, html) => {
   const mailOptions = {
-    from: '"CCTech Solutions" <contact@cctechsolutions.dev>',
+    from: `"CCTech Solutions" <${process.env.EMAIL_USER}>`,
     to,
     subject,
     html

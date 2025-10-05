@@ -1042,3 +1042,10 @@ Marquee>.hijo {
   background-color: var(--color-232f3e);
 }
 
+
+@media screen and (max-width: 768px) {
+  .dashboard-menu {
+    width: 100%;
+    height: auto;
+  }
+}

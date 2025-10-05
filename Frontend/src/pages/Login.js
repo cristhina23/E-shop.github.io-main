@@ -41,9 +41,9 @@ const Login = () => {
 
     // Actualizamos el contexto con los datos del usuario devueltos por el backend
     setUser({
-      _id: response.data.user._id,
-      name: response.data.user.name,
-      email: response.data.user.email,
+    _id: response.data._id,
+    name: response.data.firstname,
+    email: response.data.email,
     });
 
     toast.success("Login successful");

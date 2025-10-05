@@ -25,7 +25,7 @@ const createUser = asyncHandler(async (req, res) => {
     mobile,
     password,
     verificationToken,
-    isVerified: false
+    isVerified: true // while I fix the email verification
   });
 
   // 4. Verification link

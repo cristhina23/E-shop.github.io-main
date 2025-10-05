@@ -967,7 +967,7 @@ Marquee>.hijo {
 .eye-icon {
   position: absolute;
   right: 15px;
-  top: 15px;
+  top: 10px;
   font-size: 20px;
   cursor: pointer;
   color: var(--color-777777);

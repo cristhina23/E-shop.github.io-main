@@ -93,14 +93,14 @@ const Login = () => {
                     placeholder ='Email' className='form-control' />
                     
                 </div>
-                <div className='mt-1 absolute' >
+                <div className='mt-1 relative' >
                   <input 
                     type={showPassword ? 'text' : 'password'}  
                     name='password' 
                     value={formData.password}
                     onChange={handleChange}
                     
-                    placeholder ='••••••••' className='form-control' />
+                    placeholder ='••••••••' className='form-control relative' />
                     <span 
                       className='eye-icon' 
                       onClick={() => setShowPassword(!showPassword)} 

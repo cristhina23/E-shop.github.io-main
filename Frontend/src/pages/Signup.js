@@ -38,7 +38,9 @@ const handleSubmit = async (e) => {
     const { data } = await api.post('/api/user/signup', formData);
 
     // Show toast with backend message
-    toast.info(data.message);
+    toast.success("User created successfully! 🎉");
+
+    localStorage.setItem("signupEmail", formData.email);
 
     // Redirect to login
     navigate("/login");
@@ -110,7 +112,7 @@ const handleSubmit = async (e) => {
                       Only include numbers, 9 digits
                     </small>
                 </div>
-                <div className='mt-1'>
+                <div className='mt-1 relative'>
                   <input 
                     type={showPassword ? 'text' : 'password'} 
                     name='password' 

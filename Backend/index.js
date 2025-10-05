@@ -11,10 +11,21 @@ const PORT = process.env.PORT || 4000;
 // Conexión DB
 dbConnect();
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://e-shop-github-io-main.vercel.app'
+];
+
 // Middlewares
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

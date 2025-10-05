@@ -47,7 +47,7 @@ const createUser = asyncHandler(async (req, res) => {
     );
     emailSent = true;
   } catch (err) {
-    console.error("SMTP error:", err.message);
+    console.error("Error sending verification email:", err.message);
   }
 
   // 6. Respond to frontend
